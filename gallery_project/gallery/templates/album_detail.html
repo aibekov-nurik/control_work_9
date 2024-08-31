@@ -1,0 +1,30 @@
+<!-- gallery/templates/gallery/album_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ album.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ album.title }}</h1>
+<p>{{ album.description }}</p>
+<h2>Фотографии в альбоме:</h2>
+<ul>
+    {% for photo in page_obj.object_list %}
+        <li>
+            <a href="{% url 'photo_detail' photo.id %}">{{ photo.caption }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<div>
+    <span>Страницы:</span>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+    {% endif %}
+    
+    <span>{{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+    {% endif %}
+</div>
+{% endblock %}

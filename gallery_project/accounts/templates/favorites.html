@@ -1,0 +1,20 @@
+<!-- accounts/templates/accounts/favorites.html -->
+{% extends 'base.html' %}
+{% block title %}Избранное{% endblock %}
+{% block content %}
+<h1>Избранное</h1>
+
+<h2>Фотографии</h2>
+<ul>
+    {% for photo in favorite_photos %}
+        <li><a href="{% url 'photo_detail' photo.id %}">{{ photo.caption }}</a></li>
+    {% endfor %}
+</ul>
+
+<h2>Альбомы</h2>
+<ul>
+    {% for album in favorite_albums %}
+        <li><a href="{% url 'album_detail' album.id %}">{{ album.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

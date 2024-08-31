@@ -1,0 +1,20 @@
+<!-- gallery/templates/gallery/photo_list.html -->
+{% extends 'base.html' %}
+{% block title %}Главая{% endblock %}
+{% block content %}
+<h1>Список фотографий</h1>
+<ul>
+    {% for photo in photos %}
+        <li>
+            {{ photo.caption }} - {{ photo.author.first_name }} {{ photo.author.last_name }}
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' photo.author.id %}">{{ photo.author.first_name }} {{ photo.author.last_name }}</a>
+                {% if photo.album %}
+                    <a href="{% url 'album_detail' photo.album.id %}">{{ photo.album.title }}</a>
+                {% endif %}
+                <a href="{% url 'photo_detail' photo.id %}">{{ photo.caption }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

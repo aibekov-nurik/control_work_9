@@ -1,0 +1,27 @@
+<!-- gallery/templates/gallery/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Gallery{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Выйти</a> |
+                <a href="{% url 'profile' request.user.id %}">Профиль</a>
+            {% else %}
+                <a href="{% url 'login' %}">Вход</a> |
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+            <a href="{% url 'create_photo' %}">Создать фото</a> |
+            <a href="{% url 'create_album' %}">Создать альбом</a>
+        </nav>
+    </header>
+    <script src="{% static 'favorites.js' %}"></script>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

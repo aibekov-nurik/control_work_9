@@ -1,0 +1,38 @@
+<!-- accounts/templates/accounts/profile.html -->
+{% extends 'base.html' %}
+{% block title %}Профиль пользователя{% endblock %}
+{% block content %}
+<h1>{{ profile_user.first_name }} {{ profile_user.last_name }}</h1>
+
+<h2>Публичные альбомы</h2>
+<ul>
+    {% for album in public_albums %}
+        <li><a href="{% url 'album_detail' album.id %}">{{ album.title }}</a></li>
+    {% endfor %}
+</ul>
+
+<h2>Публичные фотографии без альбома</h2>
+<ul>
+    {% for photo in public_photos %}
+        <li><a href="{% url 'photo_detail' photo.id %}">{{ photo.caption }}</a></li>
+    {% endfor %}
+</ul>
+
+{% if request.user == profile_user %}
+    <h2>Приватные альбомы</h2>
+    <ul>
+        {% for album in private_albums %}
+            <li><a href="{% url 'album_detail' album.id %}">{{ album.title }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Приватные фотографии без альбома</h2>
+    <ul>
+        {% for photo in private_photos %}
+            <li><a href="{% url 'photo_detail' photo.id %}">{{ photo.caption }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2><a href="{% url 'favorites' %}">Избранное</a></h2>
+{% endif %}
+{% endblock %}

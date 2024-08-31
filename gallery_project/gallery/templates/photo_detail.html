@@ -1,0 +1,50 @@
+<!-- gallery/templates/gallery/photo_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ photo.caption }}{% endblock %}
+
+{% block content %}
+<h1>{{ photo.caption }}</h1>
+<img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+<p>Автор: 
+    {% if user.is_authenticated %}
+        <a href="{% url 'profile' photo.author.id %}">{{ photo.author.first_name }} {{ photo.author.last_name }}</a>
+    {% else %}
+        {{ photo.author.first_name }} {{ photo.author.last_name }}
+    {% endif %}
+</p>
+<p>Дата: {{ photo.created_at }}</p>
+{% if photo.album %}
+    <p>Альбом: 
+        {% if user.is_authenticated %}
+            <a href="{% url 'album_detail' photo.album.id %}">{{ photo.album.title }}</a>
+        {% else %}
+            {{ photo.album.title }}
+        {% endif %}
+    </p>
+{% endif %}
+
+<h2>Добавлено в избранное:</h2>
+<ul>
+    {% for user in favorited_by %}
+        <li><a href="{% url 'profile' user.id %}">{{ user.username }}</a></li>
+    {% endfor %}
+</ul>
+{% if photo.access_token %}
+    <p>Ссылка доступа: <a href="{{ request.build_absolute_uri }}/{{ photo.access_token }}/">{{ request.build_absolute_uri }}/{{ photo.access_token }}/</a></p>
+{% elif request.user == photo.author %}
+    <form action="{% url 'generate_access_token' photo.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Сгенерировать ссылку</button>
+    </form>
+{% endif %}    
+{% if user.is_authenticated %}
+    <div id="favorite-buttons">
+        {% if user.favorites.filter(photo=photo).exists() %}
+            <button id="remove-favorite-btn" onclick="removeFromFavorites({{ photo.id }}, null)">Удалить из избранного</button>
+        {% else %}
+            <button id="add-favorite-btn" onclick="addToFavorites({{ photo.id }}, null)">Добавить в избранное</button>
+        {% endif %}
+    </div>
+{% endif %}    
+{% endblock %}

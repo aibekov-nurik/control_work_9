@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить фото{% endblock %}
+
+{% block content %}
+<h1>Вы уверены, что хотите удалить фото "{{ object.caption }}"?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'photo_list' %}">Отмена</a>
+</form>
+{% endblock %}
